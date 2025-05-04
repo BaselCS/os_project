@@ -14,7 +14,6 @@ class HelpingBox extends StatelessWidget {
             """
    
    Blue : Thinking    
-   Red : Hungry   
    Green : Eating   
    Gray : Terminated
    Brown circle : Fork (Available)  

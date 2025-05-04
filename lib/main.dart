@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:os_project/const/const.dart';
 import 'package:os_project/const/fork.dart';
 import 'package:os_project/const/philosopher_shape.dart';
 import 'package:os_project/provider.dart';
@@ -27,62 +29,108 @@ class DiningPhilosophersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<PhilosopherProvider>(context);
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
-              width: MediaQuery.of(context).size.width,
-              child: CircularTable(
-                height: MediaQuery.of(context).size.height * 0.5,
-                width: MediaQuery.of(context).size.width,
-                numberOfPhilosophers: provider.numberOfPhilosophers,
-                isDeadlock: provider.isDeadlock,
-                selectedSolution: provider.selectedSolution,
-                philosopherStates: provider.philosopherStates,
-                forkStates: provider.forkStates,
-                forkTested: provider.forkTested,
-                forkUsers: provider.forkUsers,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
+    return Focus(
+      autofocus: true,
+      onKeyEvent: (node, event) {
+        print("Key pressed: ${event.logicalKey}");
+        if (provider.isDeadlock) {
+          provider.reSet();
+        }
+        return KeyEventResult.handled;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text('Number of Philosophers: ${provider.numberOfPhilosophers}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Slider(
-                  activeColor: Colors.blue,
-                  value: provider.numberOfPhilosophers.toDouble(),
-                  min: 3,
-                  max: 30,
-                  divisions: 27,
-                  label: provider.numberOfPhilosophers.toString(),
-                  onChanged: (newValue) {
-                    provider.updateNumberOfPhilosophers(newValue.toInt());
+                IconButton(
+                  onPressed: () {
+                    provider.reSet();
                   },
+                  icon: const Icon(Icons.restart_alt, size: 25),
                 ),
-                const SizedBox(height: 16),
-                const Text('Select a Solution:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                DropdownButton<String>(
-                  value: provider.selectedSolution,
-                  onChanged: provider.onSolutionChanged,
-                  items:
-                      PhilosopherProvider.solutions.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(value: value, child: Text(value));
-                      }).toList(),
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Dining Philosophers Problem', style: TextStyle(color: Colors.blue, fontSize: 20)),
+                          content: Expanded(child: SingleChildScrollView(scrollDirection: Axis.vertical, child: InfoText())),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK', style: TextStyle(color: Colors.blue)),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.info, size: 25),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  provider.isDeadlock ? 'Deadlock Detected!' : 'No Deadlock',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: provider.isDeadlock ? Colors.red : Colors.green),
-                ),
-                const SizedBox(height: 32),
               ],
             ),
-          ),
-        ],
+            Column(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width,
+                    child: CircularTable(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      width: MediaQuery.of(context).size.width,
+                      numberOfPhilosophers: provider.numberOfPhilosophers,
+                      isDeadlock: provider.isDeadlock,
+                      selectedSolution: provider.selectedSolution,
+                      philosopherStates: provider.philosopherStates,
+                      forkStates: provider.forkStates,
+                      forkUsers: provider.forkUsers,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      Text('Number of Philosophers: ${provider.numberOfPhilosophers}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      Slider(
+                        activeColor: Colors.blue,
+                        value: provider.numberOfPhilosophers.toDouble(),
+                        min: 3,
+                        max: 30,
+                        divisions: 27,
+                        label: provider.numberOfPhilosophers.toString(),
+                        onChanged: (newValue) {
+                          provider.updateNumberOfPhilosophers(newValue.toInt());
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const Text('Select a algorithm:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      DropdownButton<String>(
+                        value: provider.selectedSolution,
+                        onChanged: provider.onSolutionChanged,
+                        items:
+                            PhilosopherProvider.solutions.map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(value: value, child: Text(value));
+                            }).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        provider.isDeadlock ? 'Deadlock Detected!' : 'No Deadlock',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: provider.isDeadlock ? Colors.red : Colors.green),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -96,7 +144,6 @@ class CircularTable extends StatelessWidget {
   final String selectedSolution;
   final List<String> philosopherStates;
   final List<bool> forkStates;
-  final List<bool> forkTested;
   final List<int?> forkUsers;
 
   const CircularTable({
@@ -108,7 +155,6 @@ class CircularTable extends StatelessWidget {
     required this.selectedSolution,
     required this.philosopherStates,
     required this.forkStates,
-    required this.forkTested,
     required this.forkUsers,
   });
 
@@ -136,8 +182,8 @@ class CircularTable extends StatelessWidget {
       double y1 = tableRadius * sin(angle * i);
 
       int nextPhil = 0;
-      if (numberOfPhilosophers > 18) {
-        nextPhil = (i - 2) % numberOfPhilosophers;
+      if (numberOfPhilosophers > 24) {
+        nextPhil = (i) % numberOfPhilosophers;
       } else {
         nextPhil = (i - 1) % numberOfPhilosophers;
       }
@@ -164,7 +210,7 @@ class CircularTable extends StatelessWidget {
                 decoration: BoxDecoration(color: Colors.brown.shade700, shape: BoxShape.circle),
                 child: Center(child: Text((i + 1).toString(), style: TextStyle(color: Colors.white, fontSize: 15))),
               ),
-              Fork(id: (i + 1).toString(), isInUse: forkStates[i], isTested: forkTested[i], forkSize: forkRadius / 2),
+              Fork(id: (i + 1).toString(), isInUse: forkStates[i], forkSize: forkRadius / 2),
             ],
           ),
         ),
@@ -176,14 +222,26 @@ class CircularTable extends StatelessWidget {
 
   List<Widget> _buildPhilosophers() {
     List<Widget> philosophers = [];
-    double radius = min(225, max(150, 15 * numberOfPhilosophers + 0));
-    double angle = 2 * 3.14159 / numberOfPhilosophers;
+    if (provider.selectedSolution == "Limit number of Philosophers") {
+      double radius = min(225, max(150, 15 * (numberOfPhilosophers - 1) + 0));
+      double angle = 2 * 3.14159 / (numberOfPhilosophers - 1);
 
-    for (int i = 0; i < numberOfPhilosophers; i++) {
-      double x = radius * cos(angle * i);
-      double y = radius * sin(angle * i);
+      for (int i = 0; i < (numberOfPhilosophers - 1); i++) {
+        double x = radius * cos(angle * i);
+        double y = radius * sin(angle * i);
 
-      philosophers.add(PhilosopherCircle(width, height, x, y, i, numberOfPhilosophers, philosopherStates[i], isDeadlock));
+        philosophers.add(PhilosopherCircle(width, height, x, y, i, (numberOfPhilosophers - 1), philosopherStates[i], isDeadlock));
+      }
+    } else {
+      double radius = min(225, max(150, 15 * numberOfPhilosophers + 0));
+      double angle = 2 * 3.14159 / numberOfPhilosophers;
+
+      for (int i = 0; i < numberOfPhilosophers; i++) {
+        double x = radius * cos(angle * i);
+        double y = radius * sin(angle * i);
+
+        philosophers.add(PhilosopherCircle(width, height, x, y, i, numberOfPhilosophers, philosopherStates[i], isDeadlock));
+      }
     }
     return philosophers;
   }

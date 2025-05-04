@@ -1,30 +1,35 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:os_project/thinking.dart';
 
 class PhilosopherProvider with ChangeNotifier {
   int numberOfPhilosophers = 5;
   List<String> philosopherStates = [];
-  // static const List<String> solutions = <String>['None', 'Limit number of Philosophers', 'Pick Both Forks (Critical Section)', 'Asymmetric Solution'];
-  static const List<String> solutions = <String>['None', 'Pick Both Forks (Critical Section)', 'Asymmetric Solution'];
-
+  static const List<String> solutions = <String>[
+    'Any Available',
+    'Start with Left',
+    'Start with Right',
+    'Limit number of Philosophers',
+    'Pick Both Forks (Critical Section)',
+    'Asymmetric Solution',
+  ];
   List<bool> forkStates = [];
-  List<bool> forkTested = [];
   List<int?> forkUsers = [];
 
   bool isDeadlock = false;
-  String selectedSolution = 'None';
+  String selectedSolution = 'Any Available';
 
   PhilosopherProvider() {
-    selectedSolution = 'None';
+    selectedSolution = 'Any Available';
     _initialize();
+  }
+  void reSet() {
+    _initialize();
+    notifyListeners();
   }
 
   void _initialize() {
     isDeadlock = false;
     philosopherStates = List.generate(numberOfPhilosophers, (index) => 'Thinking');
-    forkTested = List.generate(numberOfPhilosophers, (index) => false);
     forkStates = List.generate(numberOfPhilosophers, (index) => false);
     forkUsers = List.generate(numberOfPhilosophers, (_) => null);
   }
@@ -76,18 +81,6 @@ class PhilosopherProvider with ChangeNotifier {
     forkUsers[rightForkIndex] = null;
     philosopherStates[philosopherIndex] = "Thinking";
   }
-
-  // void ableTest(int index) {
-  //   print("here");
-  //   forkTested[index] = true;
-  //   notifyListeners();
-  //   Timer(const Duration(seconds: 10), () {
-  //     forkTested[index] = false;
-  //     forkStates[index] = true;
-  //     print("not here");
-  //     notifyListeners();
-  //   });
-  // }
 
   //افلت
   void _handleWaitingWithNoSolution(int philosopherIndex, int leftForkIndex, int rightForkIndex) {
