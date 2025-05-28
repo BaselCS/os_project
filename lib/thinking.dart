@@ -57,10 +57,7 @@ void _applyCriticalSectionSolution(
     forkUsers[leftForkIndex] = philosopherIndex + 1;
     forkUsers[rightForkIndex] = philosopherIndex + 1;
     philosopherStates[philosopherIndex] = "Eating";
-  } else {
-    if (!forkStates[leftForkIndex]) {}
-    if (!forkStates[rightForkIndex]) {}
-  }
+  } 
 }
 
 void _applyAsymmetricSolution(int philosopherIndex, List<bool> forkStates, List<int?> forkUsers, List<String> philosopherStates) {
