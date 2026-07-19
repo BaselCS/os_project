@@ -1,3 +1,6 @@
+<img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
+
+
 # مقدمة
  السباق على الموارد في أنظمة التشغيل يقصد به محاولة أكثر من عمليةٍ الحصول على مورد ما (بيانات أو وقت معالجة) و يكون المورد محدودًا.
 في بعض الحالات قد يكون هنالك عمليتين يحتاج كل منهم مورد موجود مع الأخرى ولا يستطيع أي منهما إنهاء عمله إلا بذلك المورد ، في هذه الحالة يحصل ما يعرف بالاختناق/بالتعنت المتبادل (Deadlock).
@@ -15,6 +18,10 @@
 5. التحقق المزدوج : بأن يتأكد من أن كل الشوكتين متاحتان قبل أن يلتقط أي منهما .
 6. الزوجين يبدأون باليمين و الفريدين يبدأون باليسار
 
+# لتجربة
+https://baselcs.github.io/os_project/
+
+
 # Introduction
 Resource contention in operating systems refers to the situation where multiple processes attempt to access a shared and limited resource (such as data or processing time).
 In some cases, two processes may each hold a resource the other needs and cannot proceed without obtaining it. This situation leads to what is known as a deadlock.
@@ -31,7 +38,6 @@ My project for the Operating Systems course was to simulate the Dining Philosoph
 5. Double check: A philosopher checks that both forks are available before attempting to pick up either one.
 6. Even and odd strategy: Philosophers with even numbers start by picking the right fork, while those with odd numbers start with the left.
 
-
-
-<img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
+# Live Demo
+https://baselcs.github.io/os_project/
 
