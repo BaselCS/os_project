@@ -1,5 +1,8 @@
-<img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
-
+<div align="center">
+  <img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
+  <br>
+  <img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white" alt="Flutter Badge" />
+</div>
 
 # مقدمة
  السباق على الموارد في أنظمة التشغيل يقصد به محاولة أكثر من عمليةٍ الحصول على مورد ما (بيانات أو وقت معالجة) و يكون المورد محدودًا.
@@ -8,19 +11,20 @@
 يقول المثال :
 تخيل وجود عدد من الفلاسفة يجلسون على طاولة دائرية و أمام كلٍ منهم صحنّ و شوكة ، كل فيلسوف يفكر ما شاء إلى أن يجوع ، فإذا جائع احتاج شوكتين لكي يأكل من الصحن الذي أمامه ، ولكن لا يستطيع أي فيلسوف طلب شوكة أخذها غيره ، ولا يستطيع أي منهم الأكل إلا بشوكتين التي أمامه و التي في يساره أو يمينه ، في حال شبع الفيلسوف يعيد الشوكة فيستطيع غيره أخذها و أن يأكل بها .
 
-مشروعي في مادة نظم التشغيل كان تمثيل عشاء الفلاسفة باستخدام فلاتر(Flutter) ، مع وضع أشهر الحلول لهذه المشكلة.
+مشروعي في مادة نظم التشغيل كان تمثيل عشاء الفلاسفة باستخدام فلاتر (Flutter) ، مع وضع أشهر الحلول لهذه المشكلة.
 
-# الخورزميات
-1. ألتقاط المتاح :و هذا هو الأصل و لكنه قد يسبب اختناق لذا وضعت الخورزميات الأخرى لحله
-2. أيدا باليسار : أن تبدأ بالشوكة التي في يسار الفيلسوف دائًما مما يظمن أن الاختناق لن يتم مهما حصل ؛ لأن الفيلسوف الأخير سيجد أن الشوكة التي في يسارة مشغولة ولن يحجز الشوكة التي في يمينه
-3. أبدا باليمين : أن تبدأ بالشوكة التي في يمين الفيلسوف دائًما مما يظمن أن الاختناق لن يتم مهما حصل ؛ لأن الفيلسوف الأخير سيجد أن الشوكة التي في يسارة مشغولة ولن يحجز الشوكة التي في يساره
-4. تقييد عدد الفلاسفة : بأن تضمن ان عدد الشوك يزيد دائمًا عن عدد الفلاسفة بواحد على الأقل .
-5. التحقق المزدوج : بأن يتأكد من أن كل الشوكتين متاحتان قبل أن يلتقط أي منهما .
-6. الزوجين يبدأون باليمين و الفريدين يبدأون باليسار
+# الخوارزميات
+1. التقاط المتاح: و هذا هو الأصل و لكنه قد يسبب اختناق لذا وضعت الخوارزميات الأخرى لحله.
+2. ابدأ باليسار: أن تبدأ بالشوكة التي في يسار الفيلسوف دائًما مما يضمن أن الاختناق لن يتم مهما حصل ؛ لأن الفيلسوف الأخير سيجد أن الشوكة التي في يسارة مشغولة ولن يحجز الشوكة التي في يمينه.
+3. ابدأ باليمين: أن تبدأ بالشوكة التي في يمين الفيلسوف دائًما مما يضمن أن الاختناق لن يتم مهما حصل ؛ لأن الفيلسوف الأخير سيجد أن الشوكة التي في يسارة مشغولة ولن يحجز الشوكة التي في يساره.
+4. تقييد عدد الفلاسفة: بأن تضمن ان عدد الشوك يزيد دائمًا عن عدد الفلاسفة بواحد على الأقل .
+5. التحقق المزدوج: بأن يتأكد من أن كل الشوكتين متاحتان قبل أن يلتقط أي منهما .
+6. الزوجين يبدأون باليمين و الفريدين يبدأون باليسار.
 
-# لتجربة
-https://baselcs.github.io/os_project/
+# لتجربة المشروع
+[اضغط هنا لتجربة التطبيق مباشرة على المتصفح](https://baselcs.github.io/os_project/)
 
+---
 
 # Introduction
 Resource contention in operating systems refers to the situation where multiple processes attempt to access a shared and limited resource (such as data or processing time).
@@ -31,7 +35,7 @@ Imagine several philosophers sitting around a circular table. In front of each p
 My project for the Operating Systems course was to simulate the Dining Philosophers Problem using Flutter, while implementing and demonstrating the most common solutions to this problem.
 
 # Algorithms
-1. Pick the available: This is the default approach, but it can lead to deadlock, hence the introduction of the following solutions.
+1. Pick the available (Greedy): This is the default approach, but it can lead to deadlock, hence the introduction of the following solutions.
 2. Always pick the left fork first: Each philosopher always starts by picking the fork on their left. This ensures that deadlock will never occur because the last philosopher will find the left fork unavailable and will not block others by holding the right one.
 3. Always pick the right fork first: Each philosopher always starts by picking the fork on their right. This also guarantees no deadlock for the same reasoning as above.
 4. Limit the number of philosophers: Ensure that the number of forks is always at least one greater than the number of philosophers.
@@ -39,5 +43,22 @@ My project for the Operating Systems course was to simulate the Dining Philosoph
 6. Even and odd strategy: Philosophers with even numbers start by picking the right fork, while those with odd numbers start with the left.
 
 # Live Demo
-https://baselcs.github.io/os_project/
+[Click here to try out the live simulation](https://baselcs.github.io/os_project/)
 
+# How to run locally
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/BaselCS/os_project.git
+   ```
+2. Navigate into the directory:
+   ```bash
+   cd os_project
+   ```
+3. Get dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Run the app:
+   ```bash
+   flutter run
+   ```
