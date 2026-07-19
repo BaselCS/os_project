@@ -1,5 +1,7 @@
 <div align="center">
-  <img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
+  <a href="https://baselcs.github.io/os_project/">
+    <img width="1920" height="1081" alt="image" src="https://github.com/user-attachments/assets/4140dd94-2e1f-4b79-9788-8f26975b3aec" />
+  </a>
   <br>
   <img src="https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white" alt="Flutter Badge" />
 </div>
